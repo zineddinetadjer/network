@@ -1,14 +1,30 @@
 import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+import AuthRoute from "./Routes/AuthRoute.js";
+import UserRoute from "./Routes/UserRoute.js";
+import PostRoute from "./Routes/PostRoute.js";
 
 const app = express();
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 
+dotenv.config();
+
 mongoose
-  .connect(
-    "mongodb+srv://zineddine:zinouzinou1702@cluster01.cxsva.mongodb.net/SocialMedia?retryWrites=true&w=majority"
+  .connect(process.env.MONGO_DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() =>
+    app.listen(process.env.PORT, () =>
+      console.log(`listening at ${process.env.PORT}`)
+    )
   )
-  .then(() => app.listen(5000, () => console.log("lestening")));
+  .catch((error) => console.log(error));
+
+app.use("/auth", AuthRoute);
+app.use("/user", UserRoute);
+app.use("/post", PostRoute);
