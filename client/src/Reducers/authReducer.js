@@ -1,19 +1,10 @@
-const authReducer = (
-  state = {
-    authData: null,
-    loading: false,
-    error: false,
-  },
-  action
-) => {
+import * as actionType from "../constants/actionsTypes";
+
+const authReducer = (state = { authData: null }, action) => {
   switch (action.type) {
-    case "AUTH_START":
-      return { ...state, loading: true, error: false };
-    case "AUTH_SUCCESS":
+    case actionType.AUTH:
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
-      return { ...state, authData: action.data, loading: false, error: false };
-    case "AUTH_FAIL":
-      return { ...state, loading: false, error: true };
+      return { ...state, authData: action.data, loading: false, error: null };
     default:
       return state;
   }
