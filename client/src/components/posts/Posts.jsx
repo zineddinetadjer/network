@@ -3,6 +3,7 @@ import "./posts.css";
 import Post from "../post/Post";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { getTimelinePosts } from "../../actions/postAction";
 const Posts = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.authReducer.authData);
@@ -10,11 +11,11 @@ const Posts = () => {
 
   useEffect(() => {
     dispatch(getTimelinePosts(user._id));
-  });
+  }, []);
   return (
     <div className="Posts">
       {posts.map((post, id) => {
-        return <Post data={post} id={id} />;
+        return <Post data={post} key={id} />;
       })}
     </div>
   );
