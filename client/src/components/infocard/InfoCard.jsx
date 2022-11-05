@@ -3,7 +3,7 @@ import "./infocard.css";
 import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../profilemodal/ProfileModal";
 import { useDispatch } from "react-redux";
-import { redirect, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as UserApi from "../../Api/UserRequest";
 import { logOut } from "../../actions/AuthActions";
@@ -26,6 +26,7 @@ const InfoCard = () => {
       } else {
         const profileUser = await UserApi.getUser(profileUserId);
         setProfileUser(profileUser);
+        console.log(profileUser);
       }
     };
     fetchProfileUser();
