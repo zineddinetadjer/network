@@ -1,5 +1,5 @@
 import * as UserApi from "../Api/UserRequest";
-import { UPDATE } from "../constants/actionsTypes";
+import { UPDATE, FOLLOW, UNFOLLOW } from "../constants/actionsTypes";
 
 export const updateUser = (id, formData) => async (dispatch) => {
   try {
@@ -8,4 +8,14 @@ export const updateUser = (id, formData) => async (dispatch) => {
   } catch (error) {
     console.log("error");
   }
+};
+
+export const followUser = (id, data) => async (dispatch) => {
+  dispatch({ type: FOLLOW });
+  UserApi.followUser(id, data);
+};
+
+export const unFollowUser = (id, data) => async (dispatch) => {
+  dispatch({ type: UNFOLLOW });
+  UserApi.unFollowUser(id, data);
 };

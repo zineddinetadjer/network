@@ -33,8 +33,8 @@ const Post = ({ data }) => {
           style={{ cursor: "pointer" }}
           onClick={handleLike}
         />
-        <img src={Comment} alt="" />
-        <img src={Share} alt="" />
+        <img src={Comment} alt="" style={{ cursor: "pointer" }} />
+        <img src={Share} alt="" style={{ cursor: "pointer" }} />
       </div>
 
       <span style={{ color: "var(--gray)", fontSize: "12px" }}>
@@ -43,7 +43,7 @@ const Post = ({ data }) => {
 
       <div className="detail">
         <span>
-          <b>{data.name}</b>
+          <b>{user.firstname}</b>
         </span>
         <span> {data.desc}</span>
       </div>
