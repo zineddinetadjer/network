@@ -43,7 +43,7 @@ const Post = ({ data }) => {
 
       <div className="detail">
         <span>
-          <b>{user.firstname}</b>
+          <b>{data.name}</b>
         </span>
         <span> {data.desc}</span>
       </div>

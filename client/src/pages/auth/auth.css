@@ -19,8 +19,8 @@
 }
 
 .a-left > img {
-  width: 4rem;
-  height: 4rem;
+  width: 6rem;
+  height: 6rem;
 }
 
 .Webname > h1 {
@@ -43,6 +43,7 @@
 }
 
 .Webname > h6 {
+  color: linear-gradient(98.63deg, #f9a225 0%, #f95f35 100%);
   font-size: 0.85rem;
 }
 
