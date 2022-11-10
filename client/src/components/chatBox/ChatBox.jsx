@@ -7,17 +7,17 @@ import InputEmoji from "react-input-emoji";
 import "./chatbox.css";
 import { useRef } from "react";
 
-const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
+const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const scroll = useRef();
 
   useEffect(() => {
-    if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
-      setMessages({ ...messages, receiveMessage });
+    if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
+      setMessages({ ...messages, receivedMessage });
     }
-  }, [receiveMessage]);
+  }, [receivedMessage]);
 
   //fetching data for header
   useEffect(() => {

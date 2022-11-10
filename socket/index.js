@@ -17,12 +17,19 @@ io.on("connection", (socket) => {
         socketId: socket.id,
       });
     }
-    console.log("connected users", activeUsers);
+    // send all active users to new user
     io.emit("get-users", activeUsers);
   });
 
-  //send message
+  socket.on("disconnect", () => {
+    //remove user from active users
+    activeUsers = activeUsers.filter((user) => user.socketId !== socket.id);
+    console.log("user disconnected", activeUsers);
+    //send all active users to all users
+    io.emit("get-users", activeUsers);
+  });
 
+  //send message to a specific user
   socket.on("send-message", (data) => {
     const { receiverId } = data;
     const user = activeUsers.find((user) => user.userId === receiverId);
@@ -31,11 +38,5 @@ io.on("connection", (socket) => {
     if (user) {
       io.to(user.socketId).emit("receive-message", data);
     }
-  });
-
-  socket.on("disconnect", () => {
-    activeUsers = activeUsers.filter((user) => user.socketId !== socket.id);
-    console.log("user disconnected", activeUsers);
-    io.emit("get-users", activeUsers);
   });
 });

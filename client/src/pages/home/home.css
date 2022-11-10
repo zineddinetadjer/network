@@ -1,6 +1,13 @@
 .home {
   position: relative;
   display: grid;
-  grid-template-columns: 18rem auto 20rem;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
+}
+
+@media screen and (max-width: 1050px) {
+  .home {
+    display: flex;
+    flex-direction: column;
+  }
 }

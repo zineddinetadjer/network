@@ -61,7 +61,7 @@ const Auth = () => {
         <form className="infoForm authForm" onSubmit={handleSubmit}>
           <h3>{isSignUp ? "Sign Up" : "Log In"}</h3>
           {isSignUp && (
-            <div>
+            <div className="field">
               <input
                 type="text"
                 placeholder="First Name"
@@ -92,7 +92,7 @@ const Auth = () => {
             />
           </div>
 
-          <div>
+          <div className="field">
             <input
               type="password"
               className="infoInput"

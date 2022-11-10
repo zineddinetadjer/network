@@ -23,3 +23,12 @@
   width: 80%;
   align-self: center;
 }
+
+@media screen and (max-width: 1050px) {
+  .trendc {
+    display: none;
+  }
+  .button {
+    display: none;
+  }
+}

@@ -1,36 +1,38 @@
-import React from "react";
-import Home from "../../img/home.png";
-import Noti from "../../img/noti.png";
-import Comment from "../../img/comment.png";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { userChats } from "../../Api/ChatsRequest";
+import React, { useRef, useState, useEffect } from "react";
+import ChatBox from "../../components/chatBox/ChatBox";
 import LogoSearch from "../../components/search/LogoSearch";
 import Conversation from "../../components/conversation/Conversation";
+import NavIcons from "../../components/navicon/NavIcons";
 import "./chat.css";
-import { isRouteErrorResponse, Link } from "react-router-dom";
-import { UilSetting } from "@iconscout/react-unicons";
-import ChatBox from "../../components/chatBox/ChatBox";
+import { useSelector } from "react-redux";
+import { userChats } from "../../Api/ChatsRequest";
 import { io } from "socket.io-client";
-import { useRef } from "react";
 
 const Chat = () => {
-  const { user } = useSelector((state) => state.authReducer.authData);
-  const [chats, setChats] = useState([]);
-  const [currentChat, setCurrentChat] = useState(null);
-  const [onLineUsers, setOnLineUsers] = useState([]);
-  const [sendMessage, setSendMessage] = useState(null);
-  const [receiveMessage, setReceiveMessage] = useState(null);
   const socket = useRef();
+  const { user } = useSelector((state) => state.authReducer.authData);
 
-  //send message to socket server
+  const [chats, setChats] = useState([]);
+  const [onLineUsers, setOnLineUsers] = useState([]);
+  const [currentChat, setCurrentChat] = useState(null);
+  const [sendMessage, setSendMessage] = useState(null);
+  const [receivedMessage, setReceivedMessage] = useState(null);
+
+  //get the chat in the chat section
   useEffect(() => {
-    if (sendMessage !== null) {
-      socket.current.emit("send-message", sendMessage);
-    }
-  }, [sendMessage]);
+    const getChats = async () => {
+      try {
+        const { data } = await userChats(user._id);
+        setChats(data);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getChats();
+  }, [user._id]);
 
+  //connect to socket.io
   useEffect(() => {
     socket.current = io("http://localhost:8800");
     socket.current.emit("new-user-add", user._id);
@@ -39,24 +41,19 @@ const Chat = () => {
     });
   }, [user]);
 
-  //receive message from socket server
+  //send message to socket server
+  useEffect(() => {
+    if (sendMessage !== null) {
+      socket.current.emit("send-message", sendMessage);
+    }
+  }, [sendMessage]);
+
+  //Get message from socket server
   useEffect(() => {
     socket.current.on("receive-message", (data) => {
-      setReceiveMessage(data);
+      setReceivedMessage(data);
     });
   }, []);
-
-  useEffect(() => {
-    const getChats = async () => {
-      try {
-        const { data } = await userChats(user._id);
-        setChats(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getChats();
-  }, [user]);
 
   const checkOnlineStatus = (chat) => {
     const chatMember = chat.members.find((member) => member !== user._id);
@@ -87,23 +84,14 @@ const Chat = () => {
       {/*Right side*/}
       <div className="Right-side-chat">
         <div style={{ width: "20rem", alignSelf: "flex-end" }}>
-          <div className="navIcons">
-            <Link to="../home">
-              <img src={Home} alt="" />
-            </Link>
-            <UilSetting />
-            <img src={Noti} alt="" />
-            <Link to="../chat">
-              <img src={Comment} alt="" />
-            </Link>
-          </div>
+          <NavIcons />
         </div>
         {/*chat body*/}
         <ChatBox
           chat={currentChat}
           currentUser={user._id}
           setSendMessage={setSendMessage}
-          receiveMessage={receiveMessage}
+          receivedMessage={receivedMessage}
         />
       </div>
     </div>

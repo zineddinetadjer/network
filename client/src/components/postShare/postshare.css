@@ -72,3 +72,9 @@
   object-fit: cover;
   border-radius: 0.5rem;
 }
+
+@media screen and (max-width: 1140px) {
+  .option > span {
+    display: none;
+  }
+}

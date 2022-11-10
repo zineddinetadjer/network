@@ -1,7 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { createChat } from "../../actions/ChatActions";
 import { followUser, unFollowUser } from "../../actions/UserAction";
+import { Link } from "react-router-dom";
+import chat from "../../img/comment.png";
 
 const User = ({ person }) => {
   const dispatch = useDispatch();
@@ -12,12 +15,22 @@ const User = ({ person }) => {
 
   const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
 
+  //follow and unfollow users
   const handleFollow = () => {
     following
       ? dispatch(unFollowUser(person._id, user))
       : dispatch(followUser(person._id, user));
 
     setFollowing((prev) => !prev);
+  };
+
+  // go to chat or create one
+  const handleChat = () => {
+    const newChat = {
+      senderId: user._id,
+      receiverId: person._id,
+    };
+    dispatch(createChat(newChat));
   };
   return (
     <div>
@@ -34,7 +47,7 @@ const User = ({ person }) => {
           />
           <div className="name">
             <span>{person.firstname}</span>
-            <span>{person.username}</span>
+            <span>{person.lastname}</span>
           </div>
         </div>
         <button
@@ -45,6 +58,18 @@ const User = ({ person }) => {
         >
           {following ? "Unfollow" : "Follow"}
         </button>
+        <Link to="../chat">
+          <button
+            style={{
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+            }}
+            onClick={handleChat}
+          >
+            <img src={chat} alt="" />
+          </button>
+        </Link>
       </div>
     </div>
   );
