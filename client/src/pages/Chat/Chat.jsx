@@ -1,12 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import ChatBox from "../../components/chatBox/ChatBox";
-import LogoSearch from "../../components/search/LogoSearch";
 import Conversation from "../../components/conversation/Conversation";
-import NavIcons from "../../components/navicon/NavIcons";
 import "./chat.css";
 import { useSelector } from "react-redux";
 import { userChats } from "../../Api/ChatsRequest";
 import { io } from "socket.io-client";
+import NavBar from "../../components/navbar/NavBar";
 
 const Chat = () => {
   const socket = useRef();
@@ -62,39 +61,38 @@ const Chat = () => {
   };
 
   return (
-    <div className="Chat">
-      {/*left side*/}
-      <div className="Left-side-chat">
-        <LogoSearch />
-        <div className="Chat-container">
-          <h2>Chats</h2>
-          <div className="Chat-list">
-            {chats.map((chat) => (
-              <div onClick={() => setCurrentChat(chat)}>
-                <Conversation
-                  data={chat}
-                  currentUserId={user._id}
-                  onLine={checkOnlineStatus(chat)}
-                />
-              </div>
-            ))}
+    <>
+      <NavBar />
+      <div className="Chat">
+        {/*left side*/}
+        <div className="Left-side-chat">
+          <div className="Chat-container">
+            <h2>Chats</h2>
+            <div className="Chat-list">
+              {chats.map((chat) => (
+                <div onClick={() => setCurrentChat(chat)}>
+                  <Conversation
+                    data={chat}
+                    currentUserId={user._id}
+                    onLine={checkOnlineStatus(chat)}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-      {/*Right side*/}
-      <div className="Right-side-chat">
-        <div style={{ width: "20rem", alignSelf: "flex-end" }}>
-          <NavIcons />
+        {/*Right side*/}
+        <div className="Right-side-chat">
+          {/*chat body*/}
+          <ChatBox
+            chat={currentChat}
+            currentUser={user._id}
+            setSendMessage={setSendMessage}
+            receivedMessage={receivedMessage}
+          />
         </div>
-        {/*chat body*/}
-        <ChatBox
-          chat={currentChat}
-          currentUser={user._id}
-          setSendMessage={setSendMessage}
-          receivedMessage={receivedMessage}
-        />
       </div>
-    </div>
+    </>
   );
 };
 
